@@ -8,11 +8,26 @@ using namespace std;
 
 
 struct item {
-    string quantite;
+    int quantite;
     string nom;
     string type;
-    string prix;
+    double prix;
 };
+
+void trouverPlusChere(item* tableau, int tailleTableau) {
+    double max = 0.0;
+    int indiceDuMax = 0;
+    for (int i = 0; i <= tailleTableau; i++) {
+        if (max < tableau[i].prix) {
+            max = tableau[i].prix;
+            indiceDuMax = i;
+        }
+    }
+    cout <<  tableau[indiceDuMax].quantite << " "
+         << tableau[indiceDuMax].nom << " "
+         << "(" << tableau[indiceDuMax].type << ") "
+         << "a " << tableau[indiceDuMax].prix << "$ chacun";
+}
 
 int main()
 {
@@ -23,11 +38,12 @@ int main()
     while (getline(newfile, ligne)) {
         nLignes++;
     }
-    cout << nLignes << "asdsa";
     item* tableau = new item[nLignes];
+
     int j = 0;
-    while (getline(newfile, ligne)) {
-        cout << "q";
+    fstream newfile2;
+    newfile2.open("inventaire.txt", ios::in);
+    while (getline(newfile2, ligne)) {
         string characteristiquesProduit [4];
         string souscript;
         int i = 0;
@@ -42,17 +58,17 @@ int main()
             }
         }
         characteristiquesProduit[i] = souscript;
+        
         for (string test : characteristiquesProduit) {
         }
-        /*
-        tableau[j].nom = characteristiquesProduit[0];
-        tableau[j].type = characteristiquesProduit[1];
-        tableau[j].quantite = characteristiquesProduit[2];
-        tableau[j].prix = characteristiquesProduit[3];
-        j++;
-        */
+        
+            tableau[j].nom = characteristiquesProduit[0];
+            tableau[j].type = characteristiquesProduit[1];
+            tableau[j].quantite = stoi(characteristiquesProduit[2]);
+            tableau[j].prix = stod( characteristiquesProduit[3]);
+            j++;
+        
     }
-    for (int i = 0; i < nLignes; i++){
-        std::cout << tableau[i].nom;
-    }
+
+    trouverPlusChere(tableau, nLignes);
 }
