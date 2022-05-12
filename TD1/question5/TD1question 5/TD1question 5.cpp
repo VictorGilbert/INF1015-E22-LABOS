@@ -8,10 +8,10 @@ using namespace std;
 
 
 struct item {
-    int quantite;
+    string quantite;
     string nom;
     string type;
-    double prix;
+    string prix;
 };
 
 int main()
@@ -19,9 +19,40 @@ int main()
     fstream newfile;
     newfile.open("inventaire.txt", ios::in);
     string ligne;
+    int nLignes = 0;
     while (getline(newfile, ligne)) {
-        std::cout << ligne << "\n";
-        std::stringstream test("this_is_a_test_string");
-        std::string segment;
+        nLignes++;
+    }
+    cout << nLignes << "asdsa";
+    item* tableau = new item[nLignes];
+    int j = 0;
+    while (getline(newfile, ligne)) {
+        cout << "q";
+        string characteristiquesProduit [4];
+        string souscript;
+        int i = 0;
+        for (char character : ligne) {
+            if (character == '\t') {
+                characteristiquesProduit[i] = souscript;
+                souscript = "";
+                i += 1;
+            }
+            else {
+                souscript += character;
+            }
+        }
+        characteristiquesProduit[i] = souscript;
+        for (string test : characteristiquesProduit) {
+        }
+        /*
+        tableau[j].nom = characteristiquesProduit[0];
+        tableau[j].type = characteristiquesProduit[1];
+        tableau[j].quantite = characteristiquesProduit[2];
+        tableau[j].prix = characteristiquesProduit[3];
+        j++;
+        */
+    }
+    for (int i = 0; i < nLignes; i++){
+        std::cout << tableau[i].nom;
     }
 }
