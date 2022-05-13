@@ -12,25 +12,23 @@ using namespace std;
 //#define INFINITY
 
 int entrerValeurValide(string& text, double min, double max) {
-	bool pasLaBonneValeure = true;
 	int reponse;
-	while (pasLaBonneValeure) {
+	while (true) {
 		cout << text;
 		cin >> reponse;
 		if (min <= reponse and reponse <= max) {
-			pasLaBonneValeure = false;
 			return reponse;
 		}
 	}
 }
 
 int diffPos(int pos1, int pos2) {
-	if ((pos1 - pos2) != 0) {
-		return (pos1 - pos2) / abs(pos1 - pos2);
-	}
-	else {
+	if (pos1 == pos2)
 		return 0;
-	}
+	else if (pos1 > pos2)
+		return 1;
+	else
+		return -1;
 }
 
 int posActualise(int pos, int vitesse) {
@@ -63,15 +61,14 @@ int main() {
 
 	int diffPosInitial = diffPos(pos1, pos2);
 	while (tempsActuel != tempsTotal and pasDeCollision) {
-			pos1 = posActualise(pos1, vit1);
-			pos2 = posActualise(pos2, vit2);
-			tempsActuel += 1;
-		if (diffPos(pos1, pos2) == diffPosInitial) {
-			cout << "Apres " << tempsActuel << " seconde(s)\n";
-			cout << "Train 1 :" << pos1 << "\n";
-			cout << "Train 2 :" << pos2 << "\n";
-		}
-		else {
+		pos1 = posActualise(pos1, vit1);
+		pos2 = posActualise(pos2, vit2);
+		tempsActuel += 1;
+	 
+		cout << "Apres " << tempsActuel << " seconde(s)\n";
+		cout << "Train 1 :" << pos1 << "\n";
+		cout << "Train 2 :" << pos2 << "\n";
+		if (diffPos(pos1, pos2) != diffPosInitial) {
 			pasDeCollision = false;
 			cout << "Il y a eu une collision pendant la " << tempsActuel << "e seconde! \n";
 		}
