@@ -1,11 +1,2 @@
-﻿  Question3.cpp
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(57,62): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(58,50): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(58,40): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(60,50): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(60,40): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\TD1\Question3.cpp(24): warning C4715: 'entrerValeurValide' : les chemins de contrôle ne retournent pas tous une valeur
-  LINK : D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\Debug\TD1.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
-Question3.obj : error LNK2005: "int __cdecl entrerValeurValide(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > &,int,int)" (?entrerValeurValide@@YAHAAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@HH@Z) déjà défini(e) dans Question2.obj
-Question3.obj : error LNK2005: _main déjà défini(e) dans Question2.obj
-D:\Université\E2022\INF1015\TDs\TD1-E22-Fichiers\TD1\Debug\TD1.exe : fatal error LNK1169: un ou plusieurs symboles définis à différentes reprises ont été rencontrés
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (TD1.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
+  TD1.vcxproj -> D:\Université\E2022\INF1015\TDs\INF1015-E22-LABOS\TD1\Question2\Debug\Question 2.exe

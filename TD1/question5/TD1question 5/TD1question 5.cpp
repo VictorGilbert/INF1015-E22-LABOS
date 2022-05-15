@@ -24,7 +24,7 @@ void trouverPlusChere(item* tableau, int tailleTableau) {
         }
     }
     cout <<  tableau[indiceDuMax].quantite << " "
-         << tableau[indiceDuMax].nom << " "
+         << tableau[indiceDuMax].nom << "(s) "
          << "(" << tableau[indiceDuMax].type << ") "
          << "a " << tableau[indiceDuMax].prix << "$ chacun";
 }
@@ -40,10 +40,11 @@ int main()
     }
     item* tableau = new item[nLignes];
 
-    int j = 0;
+    
     fstream newfile2;
     newfile2.open("inventaire.txt", ios::in);
-    while (getline(newfile2, ligne)) {
+    for (int j = 0; j < nLignes; j++) {
+        getline(newfile2, ligne);
         string characteristiquesProduit [4];
         string souscript;
         int i = 0;
@@ -65,9 +66,7 @@ int main()
             tableau[j].nom = characteristiquesProduit[0];
             tableau[j].type = characteristiquesProduit[1];
             tableau[j].quantite = stoi(characteristiquesProduit[2]);
-            tableau[j].prix = stod( characteristiquesProduit[3]);
-            j++;
-        
+            tableau[j].prix = stod( characteristiquesProduit[3]);        
     }
 
     trouverPlusChere(tableau, nLignes);

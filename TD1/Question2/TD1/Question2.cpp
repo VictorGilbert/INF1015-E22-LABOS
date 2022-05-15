@@ -3,47 +3,40 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h> 
-using namespace std;
 #define MINIMUM 0
 #define MAXIMUM 1000
 
+using namespace std;
 
 int entrerValeurValide(string& text, int min, int max) {
-	bool pasLaBonneValeure = true;
 	int reponse;
-		while (pasLaBonneValeure) {
-			cout << text;
-			cin >> reponse;
-			if (min <= reponse and reponse <= max) {
-				//pasLaBonneValeure = false;
-				return reponse;
-			}
+	while (true) {
+		cout << text;
+		cin >> reponse;
+		if (min <= reponse and reponse <= max) {
+			return reponse;
+		}
 	}
 }
 
 
 
 int main() {
-	//miaw
-	int nombreSecret = rand() % MAXIMUM + MINIMUM;
-	srand(time(NULL));
-	for (int i = 0; i < 500; i++) {
-		nombreSecret = rand() % MAXIMUM + MINIMUM;
-	}
+	srand(time(NULL));//permet de générer un nombre aléatoire différent a chaque execution.
+	int nSecret = rand() % (MAXIMUM-MINIMUM) + MINIMUM;
 
-	bool nombreNonTrouve = true;
+	bool nTrouve = false;
 	string text = "Donne un nombre entier ";
-	int nombrePropose;
+	int nPropose;
 	int compteur = 0;
-	while (nombreNonTrouve) {
+	while (!nTrouve) {
 		compteur += 1;
-		nombrePropose = entrerValeurValide(text, MINIMUM, MAXIMUM);
-		if (nombrePropose == nombreSecret) {
-			nombreNonTrouve = false;
+		nPropose = entrerValeurValide(text, MINIMUM, MAXIMUM);
+		if (nPropose == nSecret) {
+			nTrouve = true;
 			cout << "bravo tu as trouve en " << compteur << " essai(s).";
-
 		}
-		else if (nombrePropose < nombreSecret) {
+		else if (nPropose < nSecret) {
 			cout << "tu es trop bas \n";
 		}
 		else {
