@@ -48,30 +48,31 @@ gsl::span<Designer*> spanListeDesigners(const ListeDesigners& liste)
 // un des jeux de la ListeJeux. En cas contraire, elle renvoie un pointeur nul.
 
 
-Designer* lireDesigner(istream& fichier)
+Designer* lireDesigner(istream& fichier, ListeJeux listeJeuxPrincipale)
 {
 	Designer designer = {}; // On initialise une structure vide de type Designer.
 	designer.nom = lireString(fichier);
 	designer.anneeNaissance = lireUint16(fichier);
 	designer.pays = lireString(fichier);
-	// Rendu ici, les champs précédents de la structure designer sont remplis
-	// avec la bonne information.
 
-	//TODO: Ajouter en mémoire le designer lu. Il faut revoyer le pointeur créé.
-	// Attention, valider si le designer existe déjà avant de le créer, sinon
-	// on va avoir des doublons car plusieurs jeux ont des designers en commun
-	// dans le fichier binaire. Pour ce faire, cette fonction aura besoin de
-	// la liste de jeux principale en paramètre.
-	// Afficher un message lorsque l'allocation du designer est réussie.
+	if (true)//(chercheDesigner(designer.nom,listeJeuxPrincipale)!= nullptr) // TODO: enlever ceci des quon a la fonction chercheDesigner (victor, bosse)
+	{
+		return nullptr; // si le designer est deja dans la liste, on ne le retourne pas.
+	}
 	cout << designer.nom << endl;  //TODO: Enlever cet affichage temporaire servant à voir que le code fourni lit bien les jeux.
-	return {}; //TODO: Retourner le pointeur vers le designer crée.
+	return &designer;
 }
 
-//TODO: Fonction qui change la taille du tableau de jeux de ListeJeux.
-// Cette fonction doit recevoir en paramètre la nouvelle capacité du nouveau
-// tableau. Il faut allouer un nouveau tableau assez grand, copier ce qu'il y
-// avait dans l'ancien, et éliminer l'ancien trop petit. N'oubliez pas, on copie
-// des pointeurs de jeux. Il n'y a donc aucune nouvelle allocation de jeu ici !
+void resize(ListeJeux &liste, int nouvelleCapacite) {
+	Jeu** nouvelleListe = new Jeu * [nouvelleCapacite];
+	for (int i = 0; i < liste.capacite;i++) {
+		nouvelleListe[i] = liste.elements[i];
+	}
+	liste.capacite = nouvelleCapacite;
+	delete(liste.elements);
+	liste.elements = nouvelleListe;
+
+}
 
 //TODO: Fonction pour ajouter un Jeu à ListeJeux.
 // Le jeu existant déjà en mémoire, on veut uniquement ajouter le pointeur vers
