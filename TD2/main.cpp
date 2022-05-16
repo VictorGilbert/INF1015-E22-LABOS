@@ -47,6 +47,25 @@ gsl::span<Designer*> spanListeDesigners(const ListeDesigners& liste)
 // Cette fonction renvoie le pointeur vers le designer si elle le trouve dans
 // un des jeux de la ListeJeux. En cas contraire, elle renvoie un pointeur nul.
 
+Designer* chercheDesigner(ListeJeux &listeJeux, const string nomDesigner) {
+ // On parcours une liste de jeu, on cherche les jeux, dans les jeux on cherche la liste de designers, et dans cette on cherche un designer en particulier
+	span<const Jeu*> listeDeJeux = spanListeJeux(listeJeux);
+	for (const Jeu* ptrjeu : listeDeJeux) {
+		Jeu jeu = *ptrjeu;
+		span<Designer*> listeDesigners = spanListeDesigners(jeu.designers);
+		for (Designer* ptrDesigner : listeDesigners) {
+			Designer designer = *ptrDesigner;
+			if (designer.nom == nomDesigner) {
+				return ptrDesigner;
+			}
+
+
+		}
+
+	}
+	return nullptr;
+}
+
 
 Designer* lireDesigner(istream& fichier)
 {
@@ -78,6 +97,18 @@ Designer* lireDesigner(istream& fichier)
 // le jeu existant. De plus, en cas de saturation du tableau elements, cette
 // fonction doit doubler la taille du tableau elements de ListeJeux.
 // Utilisez la fonction pour changer la taille du tableau écrite plus haut.
+void ajouterJeu(Jeu &jeu, ListeJeux &listeJeux) {
+	if (listeJeux.capacite == listeJeux.nElements)
+		resize(listeJeux, listeJeux.capacite * 2);
+	auto motoLikesYou = spanListeJeux(listeJeux);
+	for (Jeu* ptrJeu : motoLikesYou) {
+		if (ptrJeu == nullptr)
+			ptrJeu = &jeu;
+	}
+
+}
+
+
 
 //TODO: Fonction qui enlève un jeu de ListeJeux.
 // Attention, ici il n'a pas de désallocation de mémoire. Elle enlève le
