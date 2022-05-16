@@ -118,6 +118,32 @@ void ajouterJeu(Jeu &jeu, ListeJeux &listeJeux) {
 // jeu à être retiré par celui présent en fin de liste et décrémenter la taille
 // de celle-ci.
 
+
+void enleverJeu(Jeu &jeu, ListeJeux listeJeux) {
+	Jeu* ptrDernierJeu = nullptr;
+	auto motoLikesYou = spanListeJeux(listeJeux);
+	for (Jeu* ptrJeu : motoLikesYou) {
+		if (ptrJeu != &jeu or ptrJeu != nullptr)
+			ptrDernierJeu = ptrJeu;
+	}
+	if (ptrDernierJeu == nullptr) {
+		Jeu* nouvelleMaison;
+		nouvelleMaison = &jeu;
+		delete(&jeu);
+		resize(listeJeux, listeJeux.capacite - 1);
+
+	}
+	else {
+		Jeu* nouvelleMaison;
+		nouvelleMaison = &jeu;
+		for (Jeu* ptrJeu : motoLikesYou) {
+			if (ptrJeu == &jeu)
+				ptrJeu = ptrDernierJeu;
+			resize(listeJeux, listeJeux.capacite - 1);
+		}
+	}
+}
+
 Jeu* lireJeu(istream& fichier)
 {
 	Jeu jeu = {}; // On initialise une structure vide de type Jeu
@@ -145,14 +171,15 @@ ListeJeux creerListeJeux(const string& nomFichier)
 {
 	ifstream fichier(nomFichier, ios::binary);
 	fichier.exceptions(ios::failbit);
-	int nElements = lireUint16(fichier);
+	unsigned int nElements = lireUint16(fichier);
 	ListeJeux listeJeux = {};
+	Jeu **  mangesTesMorts = new Jeu*[nElements];
 	for([[maybe_unused]] int n : iter::range(nElements))
 	{
-		lireJeu(fichier); //TODO: Ajouter le jeu à la ListeJeux.
+		mangesTesMorts[n] = lireJeu(fichier); //TODO: Ajouter le jeu à la ListeJeux.	 
 	}
 
-	return {}; //TODO: Renvoyer la ListeJeux.
+	return { nElements, nElements, mangesTesMorts }; //TODO: Renvoyer la ListeJeux.
 }
 
 //TODO: Fonction pour détruire un designer (libération de mémoire allouée).
