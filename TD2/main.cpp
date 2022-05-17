@@ -112,7 +112,6 @@ void ajouterJeu(Jeu &jeu, ListeJeux &listeJeux) {
 // jeu à être retiré par celui présent en fin de liste et décrémenter la taille
 // de celle-ci.
 
-<<<<<<< HEAD
 
 void enleverJeu(Jeu &jeu, ListeJeux listeJeux) {
 	Jeu* ptrDernierJeu = nullptr;
@@ -139,10 +138,8 @@ void enleverJeu(Jeu &jeu, ListeJeux listeJeux) {
 	}
 }
 
-Jeu* lireJeu(istream& fichier)
-=======
+//Jeu* lireJeu(istream& fichier)
 Jeu* lireJeu(istream& fichier,ListeJeux listeJeux)
->>>>>>> ffd2b69b6db2db59bef9f577c6b8c1df0c32c106
 {
 	Jeu jeu = {}; // On initialise une structure vide de type Jeu
 	jeu.titre = lireString(fichier);
@@ -178,8 +175,21 @@ ListeJeux creerListeJeux(const string& nomFichier)
 
 //TODO: Fonction pour détruire un designer (libération de mémoire allouée).
 // Lorsqu'on détruit un designer, on affiche son nom pour fins de débogage.
-
+Designer::~Designer() {
+	cout << nom << "\n";
+	~ListeJeux(listeJeuxParticipes);
+}
 //TODO: Fonction qui détermine si un designer participe encore à un jeu.
+bool rechercheParticipeJeu(Designer designer, Jeu jeuRecherche) {
+	auto motoLikesYou = spanListeJeux(designer.listeJeuxParticipes);
+	for (Jeu* ptrJeu : motoLikesYou) {
+		Jeu jeuCompare = *ptrJeu;
+		if (jeuCompare.titre == jeuRecherche.titre)
+			return true;
+	}
+	return false;
+}
+
 
 //TODO: Fonction pour détruire un jeu (libération de mémoire allouée).
 // Attention, ici il faut relâcher toute les cases mémoires occupées par un jeu.
@@ -188,8 +198,45 @@ ListeJeux creerListeJeux(const string& nomFichier)
 // qu'un designer a participé (listeJeuxParticipes). Si le designer n'a plus de
 // jeux présents dans sa liste de jeux participés, il faut le supprimer.  Pour
 // fins de débogage, affichez le nom du jeu lors de sa destruction.
+Jeu :: ~Jeu() {
+//On parcours tous les designers, on enleve le jeu de tous les desginers ou le jeu se trouve. Si un desginer n'a plus de jeux on le detruit
+	cout << "On detruite le jeu: " << titre << ". \n";
+	span<Designer*> listeDesigners = spanListeDesigners(designers);
+	for (Designer* ptrDesigner : listeDesigners) {
+		Designer designer = *ptrDesigner;
+		if (designer.listeJeuxParticipes.nElements == 0) {
+			designer.~Designer();
+		}
+		else {
+			auto motoLikesYou = spanListeJeux(designer.listeJeuxParticipes);
+			for (Jeu* ptrJeu : motoLikesYou) {
+				Jeu jeu = *ptrJeu;
+				if (jeu.titre == titre) {
+					delete ptrJeu;
+					ptrJeu = nullptr;
+				}
+			}
+		}
+
+	}
+	designers.~ListeDesigners();
+}
+
 
 //TODO: Fonction pour détruire une ListeJeux et tous ses jeux.
+ListeJeux :: ~ListeJeux() {
+	auto motoLikesYou = spanListeJeux(*this);
+	for (Jeu* ptrJeu : motoLikesYou) {
+		Jeu jeu = *ptrJeu;
+		jeu.~Jeu();
+		delete ptrJeu;
+		ptrJeu = nullptr;
+		}
+	delete elements;
+	elements = nullptr;
+	}
+
+
 
 void afficherDesigner(const Designer& d)
 {
@@ -199,6 +246,16 @@ void afficherDesigner(const Designer& d)
 
 //TODO: Fonction pour afficher les infos d'un jeu ainsi que ses designers.
 // Servez-vous de la fonction afficherDesigner ci-dessus.
+void afficherJeu(Jeu jeu){
+	cout << "Titre: " << jeu.titre
+		<< "n\Annee de sortie: " << jeu.anneeSortie
+		<< "n\Developpe par: " << jeu.developpeur
+		<< "Voici la liste des designers: \n";
+	span<Designer*> listeDesigners = spanListeDesigners(jeu.designers);
+	for (Designer* ptrDesigner : listeDesigners) {
+		Designer designer = *ptrDesigner;
+		afficherDesigner(designer);
+}
 
 //TODO: Fonction pour afficher tous les jeux de ListeJeux, séparés par un ligne.
 // Servez-vous de la fonction d'affichage d'un jeu crée ci-dessus. Votre ligne
