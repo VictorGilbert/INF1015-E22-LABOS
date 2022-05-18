@@ -49,7 +49,7 @@ gsl::span<Designer*> spanListeDesigners(const ListeDesigners& liste)
 
 Designer* chercheDesigner(ListeJeux &listeJeux, const string nomDesigner) {
  // On parcours une liste de jeu, on cherche les jeux, dans les jeux on cherche la liste de designers, et dans cette on cherche un designer en particulier
-	span<const Jeu*> listeDeJeux = spanListeJeux(listeJeux);
+	span<Jeu*> listeDeJeux = spanListeJeux(listeJeux);
 	for (const Jeu* ptrjeu : listeDeJeux) {
 		Jeu jeu = *ptrjeu;
 		span<Designer*> listeDesigners = spanListeDesigners(jeu.designers);
@@ -78,24 +78,32 @@ Designer* lireDesigner(istream& fichier, ListeJeux listeJeux)
 		return chercheDesigner(listeJeux, designer.nom);
 	}
 	cout << designer.nom << endl;  //TODO: Enlever cet affichage temporaire servant à voir que le code fourni lit bien les jeux.
+
 	return &designer;
 }
 
-void resize(ListeJeux &liste, int nouvelleCapacite) {
-	Jeu** nouvelleListe = new Jeu * [nouvelleCapacite];
-	for (int i = 0; i < liste.capacite;i++) {
-		nouvelleListe[i] = liste.elements[i];
+itvoid resize(ListeJeux &liste, int nouvelleCapacite) {
+	ListeJeux nouvelleListe =ListeJeux();
+	if (liste.capacite != 0) {
+		for (int i = 0; i < liste.capacite; i++) {
+			nouvelleListe.elements[i] = liste.elements[i];
+		}
 	}
 	liste.capacite = nouvelleCapacite;
 	delete(liste.elements);
-	liste.elements = nouvelleListe;
+	liste = nouvelleListe;
 
 }
 
 void ajouterJeu(Jeu &jeu, ListeJeux &listeJeux) {
-	if (listeJeux.capacite == listeJeux.nElements)
+	if (listeJeux.capacite == 0) {
+		listeJeux.capacite = 1;
+		resize(listeJeux, 1);
+	}
+	else if (listeJeux.capacite == listeJeux.nElements)
 		resize(listeJeux, listeJeux.capacite * 2);
 	auto motoLikesYou = spanListeJeux(listeJeux);
+	listeJeux.nElements += 1;
 	for (Jeu* ptrJeu : motoLikesYou) {
 		if (ptrJeu == nullptr)
 			ptrJeu = &jeu;
@@ -150,6 +158,7 @@ Jeu* lireJeu(istream& fichier,ListeJeux listeJeux)
 	// bonne information.
 
 	cout << jeu.titre << endl;  //TODO: Enlever cet affichage temporaire servant à voir que le code fourni lit bien les jeux.
+	jeu.designers.elements = new Designer * [jeu.designers.nElements];
 	for ([[maybe_unused]] int i : iter::range(jeu.designers.nElements)) {
 		Designer* designer = lireDesigner(fichier,listeJeux);
 		jeu.designers.elements[i] = designer;
@@ -160,6 +169,8 @@ Jeu* lireJeu(istream& fichier,ListeJeux listeJeux)
 
 ListeJeux creerListeJeux(const string& nomFichier)
 {
+	ListeJeux listeJeu;
+	listeJeu.capacite = 0;
 	ifstream fichier(nomFichier, ios::binary);
 	fichier.exceptions(ios::failbit);
 	unsigned int nElements = lireUint16(fichier);
@@ -167,10 +178,10 @@ ListeJeux creerListeJeux(const string& nomFichier)
 	Jeu **  mangesTesMorts = new Jeu*[nElements];
 	for([[maybe_unused]] int n : iter::range(nElements))
 	{
-		mangesTesMorts[n] = lireJeu(fichier); //TODO: Ajouter le jeu à la ListeJeux.	 
+		ajouterJeu(*lireJeu(fichier,listeJeux),listeJeu); //TODO: Ajouter le jeu à la ListeJeux.
 	}
 
-	return { nElements, nElements, mangesTesMorts }; //TODO: Renvoyer la ListeJeux.
+	return listeJeu; //TODO: Renvoyer la ListeJeux.
 }
 
 //TODO: Fonction pour détruire un designer (libération de mémoire allouée).
@@ -261,6 +272,39 @@ void afficherJeu(Jeu jeu){
 // Servez-vous de la fonction d'affichage d'un jeu crée ci-dessus. Votre ligne
 // de séparation doit être différent de celle utilisée dans le main.
 
+
+Developpeur :: Developpeur(std::string nom) {
+	paireNomJeux_.first = nom;
+	Jeu** ptrJeu;
+	paireNomJeux_.second = ListeJeux {0, 0, ptrJeu};
+}
+
+Developpeur :: ~Developpeur() {
+	auto uneSpanListeJeux = spanListeJeux(paireNomJeux_.second);
+	for (Jeu* ptrJeu : uneSpanListeJeux) {
+		delete ptrJeu;
+		ptrJeu = nullptr;
+	}
+}
+
+int Developpeur::compteJeux(ListeJeux listeJeux) {
+	int compteJeux = 0;
+	auto uneSpanListeJeux = spanListeJeux(listeJeux);
+	for (Jeu* ptrJeu : uneSpanListeJeux) {
+		Jeu jeu = *ptrJeu;
+		if (jeu.developpeur == paireNomJeux_.first)
+			compteJeux += 1;
+	}
+	return compteJeux;
+}
+
+std::string Developpeur::getName() {
+	return paireNomJeux_.first;
+}
+
+//void Developpeur :: miseAJourListeJeux(ListeJeux listeTousLesJeux) {
+//
+//}
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {

@@ -1,5 +1,0 @@
-﻿  main.cpp
-C:\Users\Maxime Pageot\Desktop\2021-2022\1015\INF1015-E22-LABOS\TD2\main.cpp(51,52): warning C4100: 'listeJeuxPrincipale': unreferenced formal parameter
-C:\Users\Maxime Pageot\Desktop\2021-2022\1015\INF1015-E22-LABOS\TD2\main.cpp(73,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Maxime Pageot\Desktop\2021-2022\1015\INF1015-E22-LABOS\TD2\main.cpp(112,23): error C2660: 'lireDesigner': function does not take 1 arguments
-C:\Users\Maxime Pageot\Desktop\2021-2022\1015\INF1015-E22-LABOS\TD2\main.cpp(51,11): message : see declaration of 'lireDesigner'
